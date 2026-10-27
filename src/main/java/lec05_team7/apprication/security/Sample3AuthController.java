@@ -22,7 +22,12 @@ public class Sample3AuthController {
             .logoutSuccessUrl("/"))
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/sample5/**").authenticated()
-            .anyRequest().permitAll());
+            .anyRequest().permitAll())
+        .csrf(csrf -> csrf
+            .ignoringRequestMatchers("/h2-console/*")) // sample2用にCSRF対策を無効化
+        .headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions
+                .sameOrigin()));
     return http.build();
   }
 
