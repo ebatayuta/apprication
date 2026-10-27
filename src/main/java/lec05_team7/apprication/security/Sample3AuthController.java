@@ -12,6 +12,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class Sample3AuthController {
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.formLogin(login -> login
+        .permitAll())
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/"))
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/sample5/**").authenticated()
+            .anyRequest().permitAll());
+    return http.build();
+  }
+
   @Bean
   public InMemoryUserDetailsManager userDetailsService() {
 
